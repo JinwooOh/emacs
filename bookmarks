@@ -1,0 +1,20 @@
+;;;; Emacs Bookmark Format Version 1 ;;;;
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("Projects"
+ (filename . "~/Developments/Projects/")
+ (front-context-string . ".DS_Store\n  drwx")
+ (rear-context-string . "96 Jan 15 11:37 ")
+ (position . 254))
+("2018_Spring"
+ (filename . "~/UW_Madison/Classes/2018_Spring/")
+ (front-context-string . ".DS_Store\n  drwx")
+ (rear-context-string . "96 Jan 25 10:23 ")
+ (position . 267))
+("init"
+ (filename . "~/.emacs.d/init.el")
+ (front-context-string)
+ (rear-context-string . "'helm-bookmarks)")
+ (position . 2299))
+)
