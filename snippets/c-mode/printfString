@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Printf String 
+# key: ps
+# --
+printf("%s\n", ${string})$0;

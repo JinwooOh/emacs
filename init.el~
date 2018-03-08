@@ -1,11 +1,43 @@
+
 (setq-default inhibit-startup-screen t                        ; Skip the startup screens
               initial-scratch-message nil
-)
+	      )
+
+;;window size
+(if (display-graphic-p)
+    (progn
+      (setq initial-frame-alist
+            '(
+              (tool-bar-lines . 0)
+              (width . 130) ; chars
+              (height . 60) ; lines
+  
+        
+              ))
+
+      (setq default-frame-alist
+            '(
+              (tool-bar-lines . 0)
+              (width . 130)
+              (height . 60)
+
+              )))
+  (progn
+    (setq initial-frame-alist
+          '(
+            (tool-bar-lines . 0)))
+    (setq default-frame-alist
+          '(
+            (tool-bar-lines . 0)))))
+
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+(load-theme 'zenburn t)
 (global-linum-mode t)
 (add-hook 'after-init-hook 'global-company-mode)
+
 
 
 ;;css
@@ -22,6 +54,7 @@
 	:config
 	(which-key-mode))
 
+;;shell key setting
 (add-hook 'shell-mode-hook
   (lambda ()
     (define-key shell-mode-map (kbd "<M-up>") 'comint-previous-input)
@@ -29,6 +62,7 @@
   )
   )
 
+;;ace-window
 (use-package ace-window
 :ensure t
 :init
@@ -49,9 +83,11 @@
  '(custom-safe-themes
    (quote
     ("d61fc0e6409f0c2a22e97162d7d151dee9e192a90fa623f8d6a071dbf49229c6" default)))
+ '(help-at-pt-display-when-idle (quote (flymake-overlay)) nil (help-at-pt))
+ '(help-at-pt-timer-delay 0.9)
  '(package-selected-packages
    (quote
-    (rjsx-mode flycheck indium js-comint emmet-mode auto-complete company magit ace-window gruber-darker-theme ## which-key helm-swoop web-mode))))
+    (zenburn-theme rjsx-mode flycheck indium js-comint emmet-mode auto-complete company magit ace-window gruber-darker-theme ## which-key helm-swoop web-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -72,7 +108,7 @@
 (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jinja?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+;;(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.mako$" . web-mode))
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (setq web-mode-enable-current-column-highlight t) ;;highlight column
@@ -86,21 +122,17 @@
 (add-hook 'web-mode-hook  'web-mode-indent-hook)
 (add-hook 'web-mode-hook  'emmet-mode)
 
+
 ;;emmet
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
- 
 (add-hook 'html-mode-hook 'emmet-mode)
+(add-hook 'rjsx-mode-hook  'emmet-mode) 
+
+
 (add-hook 'emmet-mode-hook (lambda () (setq emmet-indent-after-insert nil)))
 (add-hook 'emmet-mode-hook (lambda () (setq emmet-indentation 2))) ;; indent 2 spaces.
 (setq emmet-move-cursor-between-quotes t) ;; default nil
-
-;;helm
-(require 'helm-config)
-;; When doing isearch, hand the word over to helm-swoop
-(global-set-key (kbd "M-i") 'helm-swoop)
-(global-set-key (kbd "C-x b") 'helm-buffers-list)
-(global-set-key (kbd "C-x r b") 'helm-bookmarks)
 
 ;;js tern setting
 (require 'company)
@@ -110,15 +142,21 @@
                            (tern-mode)
                            (company-mode)))
 
+;;helm
+(require 'helm-config)
+;; When doing isearch, hand the word over to helm-swoop
+(global-set-key (kbd "M-i") 'helm-swoop)
+(global-set-key (kbd "C-x b") 'helm-buffers-list)
+(global-set-key (kbd "C-x r b") 'helm-bookmarks)
 
-;;test
+
+;;flycheck setting
 (defun flymake-html-init ()
        (let* ((temp-file (flymake-init-create-temp-buffer-copy
                           'flymake-create-temp-inplace))
               (local-file (file-relative-name
                            temp-file
                            (file-name-directory buffer-file-name))))
-         ;; please note on Window you need add directory of `tidy.exe` into environment variable `PATH`
          (list "tidy" (list local-file))))
 
 (defun flymake-html-load ()
@@ -136,6 +174,10 @@
   (flymake-html-load))
 (add-hook 'web-mode-hook 'web-mode-hook-setup)
 
-(custom-set-variables
-     '(help-at-pt-timer-delay 0.9)
-     '(help-at-pt-display-when-idle '(flymake-overlay)))
+
+
+;;rjsx < bug
+;; @see https://github.com/felipeochoa/rjsx-mode/issues/33
+(eval-after-load 'rjsx-mode
+  '(progn
+     (define-key rjsx-mode-map "<" nil)))

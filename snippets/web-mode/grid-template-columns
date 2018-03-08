@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: grid-template-columns
+# key: gtc
+# --
+grid-template-columns: $0

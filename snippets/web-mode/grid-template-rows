@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: grid-template-rows
+# key: gtr
+# --
+grid-template-rows: $0
