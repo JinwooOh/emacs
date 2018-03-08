@@ -1,4 +1,3 @@
 # emacs
-emacs related
 
-My Emacs setting
+My Emacs setting for web development and other programming. 
